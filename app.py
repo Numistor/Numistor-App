@@ -1,21 +1,24 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
-import numpy as np
+import base64
 import io
-from streamlit.runtime.media_file_manager import _MediaFileManager
 
 st.set_page_config(page_title="Numistor – Münz-Auswahl", layout="wide")
 st.title("🪙 Numistor – Interaktive Münz-Auswahl mit Maus")
+
+def image_to_data_url(image: Image.Image) -> str:
+    buffered = io.BytesIO()
+    image.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode()
+    return f"data:image/png;base64,{img_str}"
 
 uploaded_file = st.file_uploader("📤 Lade ein Bild mit mehreren Münzen hoch", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
     try:
-        # Bild laden & umwandeln
         image = Image.open(uploaded_file).convert("RGB")
-        image.save("temp_img.png")  # temporäre Speicherung
-        image_url = _MediaFileManager.get_url("temp_img.png")  # interne URL
+        image_url = image_to_data_url(image)
     except Exception as e:
         st.error(f"❌ Fehler beim Laden des Bildes: {e}")
         st.stop()
@@ -38,11 +41,7 @@ if uploaded_file:
     if canvas_result.json_data and "objects" in canvas_result.json_data:
         objects = canvas_result.json_data["objects"]
         if objects:
-            st.success(f"✅ {len(objects)} Kreise erkannt")
-            st.write("🧾 Koordinaten der Kreise:")
-            for i, obj in enumerate(objects, 1):
-                st.write(f"{i}: center=({int(obj['left'])}, {int(obj['top'])}), radius={int(obj['radius'])}")
-        else:
-            st.warning("⚠️ Noch keine Kreise gezeichnet.")
+            st.success(f"✅ {len(objects)}
+
 
 
