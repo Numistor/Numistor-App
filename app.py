@@ -9,12 +9,11 @@ st.title("🪙 Numistor – Interaktive Münz-Auswahl mit Maus")
 uploaded_file = st.file_uploader("📤 Lade ein Bild mit mehreren Münzen hoch", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
-    image = Image.open(uploaded_file)
+    image = Image.open(uploaded_file).convert("RGB")  # <- Wichtig: nach RGB konvertieren!
     st.image(image, caption="Originalbild", use_column_width=True)
 
     st.subheader("✏️ Zeichne Kreise auf die Münzen")
 
-    # Konvertiere das PIL-Image in ein NumPy-Array
     img_array = np.array(image)
 
     canvas_result = st_canvas(
@@ -38,3 +37,4 @@ if uploaded_file:
                 st.write(f"{i}: center=({int(obj['left'])}, {int(obj['top'])}), radius={int(obj['radius'])}")
         else:
             st.warning("⚠️ Noch keine Kreise gezeichnet.")
+
