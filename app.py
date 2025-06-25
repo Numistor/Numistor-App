@@ -1,7 +1,9 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
+import numpy as np
 import io
+from streamlit.runtime.media_file_manager import _MediaFileManager
 
 st.set_page_config(page_title="Numistor – Münz-Auswahl", layout="wide")
 st.title("🪙 Numistor – Interaktive Münz-Auswahl mit Maus")
@@ -10,11 +12,10 @@ uploaded_file = st.file_uploader("📤 Lade ein Bild mit mehreren Münzen hoch",
 
 if uploaded_file:
     try:
-        # Lade Bild aus Upload
+        # Bild laden & umwandeln
         image = Image.open(uploaded_file).convert("RGB")
-        buffer = io.BytesIO()
-        image.save(buffer, format="PNG")
-        buffer.seek(0)
+        image.save("temp_img.png")  # temporäre Speicherung
+        image_url = _MediaFileManager.get_url("temp_img.png")  # interne URL
     except Exception as e:
         st.error(f"❌ Fehler beim Laden des Bildes: {e}")
         st.stop()
@@ -22,12 +23,11 @@ if uploaded_file:
     st.image(image, caption="Originalbild", use_column_width=True)
     st.subheader("✏️ Zeichne Kreise auf die Münzen")
 
-    # Zeige Zeichenfläche mit richtigem Background-Format
     canvas_result = st_canvas(
         fill_color="rgba(255, 0, 0, 0.3)",
         stroke_width=3,
         stroke_color="#ff0000",
-        background_image=Image.open(buffer),
+        background_image=image_url,
         update_streamlit=True,
         height=image.height,
         width=image.width,
@@ -44,4 +44,5 @@ if uploaded_file:
                 st.write(f"{i}: center=({int(obj['left'])}, {int(obj['top'])}), radius={int(obj['radius'])}")
         else:
             st.warning("⚠️ Noch keine Kreise gezeichnet.")
+
 
