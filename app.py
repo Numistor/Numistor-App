@@ -20,9 +20,17 @@ if uploaded_file:
     st.image(image, caption="Originalbild", use_column_width=True)
     st.subheader("✏️ Zeichne Kreise auf die Münzen")
 
-    try:
+      try:
         canvas_result = st_canvas(
             fill_color="rgba(255, 0, 0, 0.3)",
             stroke_width=3,
             stroke_color="#ff0000",
+            background_image=img_array,
+            update_streamlit=True,
+            height=image.height,
+            width=image.width,
+            drawing_mode="circle",
+            key="canvas",
+        ) 
+
 
