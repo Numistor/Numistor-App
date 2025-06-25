@@ -20,7 +20,7 @@ if uploaded_file:
     st.image(image, caption="Originalbild", use_column_width=True)
     st.subheader("✏️ Zeichne Kreise auf die Münzen")
 
-      try:
+    try:
         canvas_result = st_canvas(
             fill_color="rgba(255, 0, 0, 0.3)",
             stroke_width=3,
@@ -31,6 +31,19 @@ if uploaded_file:
             width=image.width,
             drawing_mode="circle",
             key="canvas",
-        ) 
+        )
+    except Exception as e:
+        st.error(f"❌ Fehler beim Anzeigen der Zeichenfläche: {e}")
+        st.stop()
+
+    if canvas_result.json_data is not None:
+        objects = canvas_result.json_data["objects"]
+        if objects:
+            st.success(f"✅ {len(objects)} Kreise erkannt")
+            st.write("🧾 Koordinaten der Kreise:")
+            for i, obj in enumerate(objects, 1):
+                st.write(f"{i}: center=({int(obj['left'])}, {int(obj['top'])}), radius={int(obj['radius'])}")
+        else:
+            st.warning("⚠️ Noch keine Kreise gezeichnet.")
 
 
