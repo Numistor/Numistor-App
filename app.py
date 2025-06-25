@@ -41,7 +41,8 @@ if uploaded_file:
     if canvas_result.json_data and "objects" in canvas_result.json_data:
         objects = canvas_result.json_data["objects"]
         if objects:
-            st.success(f"✅ {len(objects)}
+            st.success(f"✅ {len(objects)} Kreise erkannt")
+
 
 
 
