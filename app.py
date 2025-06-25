@@ -9,8 +9,8 @@ st.title("🪙 Numistor – Interaktive Münz-Auswahl mit Maus")
 uploaded_file = st.file_uploader("📤 Lade ein Bild mit mehreren Münzen hoch", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
-    # Sicheres Laden und Konvertieren des Bildes
     try:
+        # Bild laden & umwandeln
         image = Image.open(uploaded_file).convert("RGB")
         img_array = np.asarray(image).astype("uint8")
     except Exception as e:
@@ -20,23 +20,21 @@ if uploaded_file:
     st.image(image, caption="Originalbild", use_column_width=True)
     st.subheader("✏️ Zeichne Kreise auf die Münzen")
 
-    try:
-        canvas_result = st_canvas(
-            fill_color="rgba(255, 0, 0, 0.3)",
-            stroke_width=3,
-            stroke_color="#ff0000",
-            background_image=img_array,
-            update_streamlit=True,
-            height=image.height,
-            width=image.width,
-            drawing_mode="circle",
-            key="canvas",
-        )
-    except Exception as e:
-        st.error(f"❌ Fehler beim Anzeigen der Zeichenfläche: {e}")
-        st.stop()
+    # canvas_result direkt – ohne vorherige if-Prüfung!
+    canvas_result = st_canvas(
+        fill_color="rgba(255, 0, 0, 0.3)",
+        stroke_width=3,
+        stroke_color="#ff0000",
+        background_image=img_array,
+        update_streamlit=True,
+        height=image.height,
+        width=image.width,
+        drawing_mode="circle",
+        key="canvas",
+    )
 
-    if canvas_result.json_data is not None:
+    # Auswertung der Zeichnungen
+    if canvas_result.json_data and "objects" in canvas_result.json_data:
         objects = canvas_result.json_data["objects"]
         if objects:
             st.success(f"✅ {len(objects)} Kreise erkannt")
