@@ -1,16 +1,18 @@
 
-# Numistor Münzerkennungs-App
+# Numistor Münzerkennungs-App (mit Mausinteraktion)
 
-Diese App dient zur interaktiven Auswahl und Analyse von Münzen aus einem hochgeladenen Bild. Sie basiert auf Streamlit.
+Diese App erlaubt dir, Münzen mit der Maus einzugrenzen, indem du Kreise zeichnest.
+Ideal zur Vorbereitung von OCR oder Bildanalyse.
 
-## Start
+## Start lokal
 
 ```
+pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Geplant
+## Funktionen
 
-- Maussteuerung zum Ziehen von Kreisen um Münzen
-- Textanalyse und Klassifizierung
-- PDF-Export der Ergebnisse
+- Bild-Upload
+- Kreis-Auswahl per Maus
+- Vorschau & Koordinaten-Ausgabe
