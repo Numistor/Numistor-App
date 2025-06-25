@@ -37,6 +37,6 @@ if uploaded_file:
                 st.write(f"{i}: center=({int(obj['left'])}, {int(obj['top'])}), radius={int(obj['radius'])}")
         else:
             st.warning("⚠️ Noch keine Kreise gezeichnet.")
-``
+
 
 
