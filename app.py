@@ -1,4 +1,3 @@
-
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 from PIL import Image
@@ -14,11 +13,15 @@ if uploaded_file:
     st.image(image, caption="Originalbild", use_column_width=True)
 
     st.subheader("✏️ Zeichne Kreise auf die Münzen")
+
+    # Konvertiere das PIL-Image in ein NumPy-Array
+    img_array = np.array(image)
+
     canvas_result = st_canvas(
         fill_color="rgba(255, 0, 0, 0.3)",
         stroke_width=3,
         stroke_color="#ff0000",
-        background_image=image,
+        background_image=img_array,
         update_streamlit=True,
         height=image.height,
         width=image.width,
